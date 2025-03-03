@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   page: {
     padding: 30,
     fontFamily: "Helvetica",
+    backgroundColor: "white",
   },
   header: {
     marginBottom: 20,
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 10,
     color: "#ffbb0a",
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     borderBottomColor: "#ffbb0a",
     paddingBottom: 2,
   },
