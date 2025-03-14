@@ -1,38 +1,11 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { educationSchema } from "@shared/schema";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Card, CardContent } from "@/components/ui/card";
-import { Pencil, Plus, Trash2 } from "lucide-react";
-
-type EducationEntry = {
-  school: string;
-  degree: string;
-  field: string;
-  startDate: string;
-  endDate: string;
-};
-
-interface EducationProps {
-  data: EducationEntry[];
-  onUpdate: (data: EducationEntry[]) => void;
-}
+import { useEffect } from "react";
+// ...existing code...
 
 export default function Education({ data, onUpdate }: EducationProps) {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const form = useForm<EducationEntry>({
     resolver: zodResolver(educationSchema),
-    defaultValues: editIndex !== null ? data[editIndex] : {
+    defaultValues: {
       school: "",
       degree: "",
       field: "",
@@ -40,6 +13,20 @@ export default function Education({ data, onUpdate }: EducationProps) {
       endDate: "",
     },
   });
+
+  useEffect(() => {
+    if (editIndex !== null) {
+      form.reset(data[editIndex]);
+    } else {
+      form.reset({
+        school: "",
+        degree: "",
+        field: "",
+        startDate: "",
+        endDate: "",
+      });
+    }
+  }, [editIndex, data, form]);
 
   const onSubmit = (values: EducationEntry) => {
     const newData = [...data];
@@ -60,14 +47,13 @@ export default function Education({ data, onUpdate }: EducationProps) {
 
   const handleEdit = (index: number) => {
     setEditIndex(index);
-    form.reset(data[index]);
   };
 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
         {data.map((entry, index) => (
-          <Card key={index}>
+          <Card key={entry.school + index}>
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
                 <div>
